@@ -138,12 +138,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   homeButtonText: {
-    fontWeight: 'bold', color: '#333', fontSize: 15
+    fontWeight: 'bold', color: '#ffffff', fontSize: 15
   },
   homeButton: {
     marginTop: 10, paddingVertical: 12, paddingHorizontal: 40,
     borderRadius: 25, borderWidth: 1, borderColor: '#aaa',
-    backgroundColor: '#ffffff', alignItems: 'center',
+    backgroundColor: '#3d5f83', alignItems: 'center',
     alignSelf: 'center', width: 160,
   },
 });

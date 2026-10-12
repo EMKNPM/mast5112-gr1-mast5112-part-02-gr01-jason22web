@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 
 interface MenuItem {
   id: string;
@@ -12,7 +12,31 @@ interface MenuItem {
 
 export default function HomeScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  //Local state to store active menu items
   const [menuItem, setMenuItem] = useState<MenuItem[]>([]);
+
+  //Adds newly added dished
+  useEffect(() => {
+    if (params.name && params.id) {
+      const newDish: MenuItem = {
+        id: params.id as string,
+        name: params.name as string,
+        description: params.description as string,
+        course: params.course as string,
+        price: params.price as string,
+      };
+
+      //Add to list if it doesnt exist already
+      setMenuItem((prevItems) => {
+        const exist = prevItems.some((item) => item.id === newDish.id);
+        if (!exist) {
+          return [newDish, ...prevItems];
+        }
+        return prevItems;
+      });
+    }
+  }, [params])
 
   return (
     <View style={styles.container}>
@@ -22,15 +46,15 @@ export default function HomeScreen() {
       {/* Navigation buttons */}
       <View style={styles.buttonRow}>
         <TouchableOpacity
-          style={[styles.addButton, styles.addDishButton]}
+          style={[styles.Button, styles.addDishButton]}
           onPress={() => router.push('/add-dish')}>
-          <Text style={styles.addButtonText}>Add New Dish</Text>
+          <Text style={styles.ButtonText}>Add New Dish</Text>
         </TouchableOpacity>
-       
+
         <TouchableOpacity
-          style={[styles.addButton, styles.statisticsButton]}
+          style={[styles.Button, styles.statisticsButton]}
           onPress={() => router.push('/statistics')}>
-          <Text style={styles.addButtonText}>Statistics Screen</Text>
+          <Text style={styles.ButtonText}>Statistics Screen</Text>
         </TouchableOpacity>
       </View>
 
@@ -60,19 +84,55 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff', paddingTop: 50 },
-  buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  addButton: { padding: 12, borderRadius: 8, width: '25%', alignItems: 'center' },
-  addDishButton: { backgroundColor: '#3d78b7' },
-  statisticsButton: { backgroundColor: '#385a77' },
-  addButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-  subHeading: { fontSize: 18 },
-  emptyText: { fontStyle: 'italic' },
-  card: { padding: 15, borderRadius: 8, },
-  cardHeader: { flexDirection: 'row', },
-  dishName: { fontWeight: 'bold', },
-  dishPrice: { fontWeight: 'bold', },
-  description: { color: ' #444', marginBottom: 5 },
-  courseTags: { fontSize: 12, color: '#666', fontStyle: 'italic' },
+  container: {
+    flex: 1, padding: 20, backgroundColor: '#98949498',
+    paddingTop: 50
+  },
+  buttonRow: {
+    flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
+  },
+  title: {
+    fontSize: 24, fontWeight: 'bold', marginBottom: 20,
+    textAlign: 'center'
+  },
+  Button: {
+    padding: 12, borderRadius: 8, width: '48%',
+    alignItems: 'center'
+  },
+  addDishButton: {
+    backgroundColor: '#3d78b7'
+  },
+  statisticsButton: {
+    backgroundColor: '#385a77'
+  },
+  ButtonText: {
+    color: '#fff', fontWeight: 'bold', fontSize: 16
+  },
+  subHeading: {
+    fontSize: 18, fontWeight: 'bold', marginBottom: 10
+  },
+  emptyText: {
+    fontStyle: 'italic', color: '#666', textAlign: 'center',
+    marginTop: 20
+  },
+  card: {
+    padding: 15, borderRadius: 8, borderWidth: 1,
+    borderColor: '#ddd', marginBottom: 12,
+    backgroundColor: '#f9f9f9'
+  },
+  cardHeader: {
+    flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 
+  },
+  dishName: {
+    fontWeight: 'bold', fontSize: 16
+  },
+  dishPrice: {
+    fontWeight: 'bold', fontSize: 16, color: '#28a745'
+  },
+  description: {
+    color: ' #444', marginBottom: 5
+  },
+  courseTags: {
+    fontSize: 12, color: '#666', fontStyle: 'italic'
+  },
 });
