@@ -7,36 +7,39 @@ interface MenuItem {
   name: string;
   description: string;
   course: string;
-  price: string
+  price: string;
 }
+
+// Global array
+let globalMenuItems: MenuItem[] = [];
 
 export default function HomeScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  //Local state to store active menu items
-  const [menuItem, setMenuItem] = useState<MenuItem[]>([]);
+  // Local state to store active menu items
+  const [menuItem, setMenuItem] = useState<MenuItem[]>(globalMenuItems);
 
-  //Adds newly added dished
+  // Adds newly added dishes
   useEffect(() => {
     if (params.name && params.id) {
-      const newDish: MenuItem = {
-        id: params.id as string,
-        name: params.name as string,
-        description: params.description as string,
-        course: params.course as string,
-        price: params.price as string,
-      };
+      const newId = params.id as string;
+      const exists = globalMenuItems.some((item) => item.id == newId);
 
-      //Add to list if it doesnt exist already
-      setMenuItem((prevItems) => {
-        const exist = prevItems.some((item) => item.id === newDish.id);
-        if (!exist) {
-          return [newDish, ...prevItems];
-        }
-        return prevItems;
-      });
+      if (!exists) {
+        const newDish: MenuItem = {
+          id: newId,
+          name: params.name as string,
+          description: params.description as string,
+          course: params.course as string,
+          price: params.price as string,
+        };
+
+        // Add to list if it doesn't exist already
+        globalMenuItems = [newDish, ...globalMenuItems];
+        setMenuItem([...globalMenuItems]);
+      }
     }
-  }, [params])
+  }, [params]);
 
   return (
     <View style={styles.container}>
@@ -54,7 +57,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           style={[styles.Button, styles.statisticsButton]}
           onPress={() => router.push('/statistics')}>
-          <Text style={styles.ButtonText}>Statistics Screen</Text>
+          <Text style={styles.ButtonText}>Nothing yet</Text>
         </TouchableOpacity>
       </View>
 
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9'
   },
   cardHeader: {
-    flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 
+    flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5
   },
   dishName: {
     fontWeight: 'bold', fontSize: 16
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', fontSize: 16, color: '#28a745'
   },
   description: {
-    color: ' #444', marginBottom: 5
+    color: '#444', marginBottom: 5
   },
   courseTags: {
     fontSize: 12, color: '#666', fontStyle: 'italic'
