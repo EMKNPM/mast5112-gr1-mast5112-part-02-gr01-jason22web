@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
 interface MenuItem {
   id: string;
@@ -11,7 +11,8 @@ interface MenuItem {
 }
 
 export default function HomeScreen() {
-  const [MenuItem, setMenuItem] = useState<MenuItem[]>([]);
+  const router = useRouter();
+  const [menuItem, setMenuItem] = useState<MenuItem[]>([]);
 
   return (
     <View style={styles.container}>
@@ -19,24 +20,27 @@ export default function HomeScreen() {
       <Text style={styles.title}>Chef's Menu Manager</Text>
 
       {/* Navigation buttons */}
-      <Link href="/add-dish" asChild>
-        <TouchableOpacity style={[styles.addButton, styles.addDishButton]}>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={[styles.addButton, styles.addDishButton]}
+          onPress={() => router.push('/add-dish')}>
           <Text style={styles.addButtonText}>Add New Dish</Text>
         </TouchableOpacity>
-      </Link>
-      <Link href="/statistics">
-        <TouchableOpacity style={[styles.addButton, styles.statisticsButton]}>
+        <TouchableOpacity
+          style={[styles.addButton, styles.statisticsButton]}
+          onPress={() => router.push('/statistics')}>
           <Text style={styles.addButtonText}>Statistics Screen</Text>
         </TouchableOpacity>
-      </Link>
+      </View>
+
       <Text style={styles.subHeading}>Current Menu Items:</Text>
 
       {/* Automatically display the list or a friendly message if empty */}
-      {MenuItem.length === 0 ? (
+      {menuItem.length === 0 ? (
         <Text style={styles.emptyText}>No menu items have been added yet...</Text>
       ) : (
         <FlatList
-          data={MenuItem}
+          data={menuItem}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.card}>
@@ -48,25 +52,26 @@ export default function HomeScreen() {
               <Text style={styles.courseTags}>Course: {item.course}</Text>
             </View>
           )}
-          />
+        />
       )}
     </View>
   );
 }
 
-const styles = StyleSheet.create ({
-  container: { flex: 1, padding:20, backgroundColor:'#fff', paddingTop:50 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center'},
-  addButton: {},
-  addDishButton: {},
-  statisticsButton: {},
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 20, backgroundColor: '#fff', paddingTop: 50 },
+  buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  addButton: { padding: 12, borderRadius: 8, width: '45%', alignItems: 'center' },
+  addDishButton: { backgroundColor: '#3d78b7' },
+  statisticsButton: { backgroundColor: '#385a77' },
   addButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-  subHeading: { fontSize: 18},
-  emptyText: {fontStyle: 'italic'},
-  card: { padding: 15, borderRadius: 8,},
+  subHeading: { fontSize: 18 },
+  emptyText: { fontStyle: 'italic' },
+  card: { padding: 15, borderRadius: 8, },
   cardHeader: { flexDirection: 'row', },
-  dishName: { fontWeight: 'bold',},
-  dishPrice: { fontWeight: 'bold',},
+  dishName: { fontWeight: 'bold', },
+  dishPrice: { fontWeight: 'bold', },
   description: { color: ' #444', marginBottom: 5 },
   courseTags: { fontSize: 12, color: '#666', fontStyle: 'italic' },
 });
