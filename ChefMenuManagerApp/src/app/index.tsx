@@ -33,10 +33,27 @@ export default function HomeScreen() {
 
       {/* Automatically display the list or a friendly message if empty */}
       {MenuItem.length === 0 ? (
-        <Text
+        <Text style={styles.emptyText}>No menu items have been added yet...</Text>
+      ) : (
+        <FlatList
+          data={MenuItem}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <View>
+                <Text style={styles.dishName}>{item.name}</Text>
+                <Text style={styles.dishPrice}>R{item.price}</Text>
+              </View>
+              <Text style={styles.description}>{item.description}</Text>
+              <Text style={styles.courseTage}>Course: {item.course}</Text>
+            </View>
+          )}
+          />
       )}
-
-
     </View>
-  )
+  );
 }
+
+const styles = StyleSheet.create ({
+  
+})
