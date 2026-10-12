@@ -26,11 +26,7 @@ export default function HomeScreen() {
           onPress={() => router.push('/add-dish')}>
           <Text style={styles.addButtonText}>Add New Dish</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.addButton, styles.menuButton]}
-          onPress={() => router.push('/menu')}>
-          <Text style={styles.addButtonText}>Statistics Screen</Text>
-        </TouchableOpacity>        
+       
         <TouchableOpacity
           style={[styles.addButton, styles.statisticsButton]}
           onPress={() => router.push('/statistics')}>
@@ -70,7 +66,6 @@ const styles = StyleSheet.create({
   addButton: { padding: 12, borderRadius: 8, width: '25%', alignItems: 'center' },
   addDishButton: { backgroundColor: '#3d78b7' },
   statisticsButton: { backgroundColor: '#385a77' },
-  menuButton: { backgroundColor: '#5e82a1' },
   addButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
   subHeading: { fontSize: 18 },
   emptyText: { fontStyle: 'italic' },
