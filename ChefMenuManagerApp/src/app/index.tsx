@@ -27,6 +27,11 @@ export default function HomeScreen() {
           <Text style={styles.addButtonText}>Add New Dish</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          style={[styles.addButton, styles.menuButton]}
+          onPress={() => router.push('/menu')}>
+          <Text style={styles.addButtonText}>Statistics Screen</Text>
+        </TouchableOpacity>        
+        <TouchableOpacity
           style={[styles.addButton, styles.statisticsButton]}
           onPress={() => router.push('/statistics')}>
           <Text style={styles.addButtonText}>Statistics Screen</Text>
@@ -62,9 +67,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#fff', paddingTop: 50 },
   buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  addButton: { padding: 12, borderRadius: 8, width: '45%', alignItems: 'center' },
+  addButton: { padding: 12, borderRadius: 8, width: '25%', alignItems: 'center' },
   addDishButton: { backgroundColor: '#3d78b7' },
   statisticsButton: { backgroundColor: '#385a77' },
+  menuButton: { backgroundColor: '#5e82a1' },
   addButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
   subHeading: { fontSize: 18 },
   emptyText: { fontStyle: 'italic' },
